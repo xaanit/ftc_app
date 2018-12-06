@@ -3,24 +3,34 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 class DriveTrain {
-    private final DcMotor dtLeft;
-    private final DcMotor dtRight;
+    private final DcMotor[] motors;
     DriveTrain (DcMotor dtLeft, DcMotor dtRight, DcMotor.RunMode mode) {
         dtLeft.setMode(mode);
+        dtRight.setMode(mode);
         dtLeft.setDirection(DcMotor.Direction.FORWARD);
         dtRight.setDirection(DcMotor.Direction.REVERSE);
-        this.dtLeft = dtLeft;
-        this.dtRight = dtRight;
+        motors = new DcMotor[] { dtLeft, dtRight };
     }
     void setTargetPosition (int position) {
-        this.dtLeft.setTargetPosition(position);
-        this.dtRight.setTargetPosition(position);
+        for (int i = 0; i < motors.length; i++) {
+            motors[i].setTargetPosition(position);
+        }
     }
     void setPower (double power) {
-        this.dtLeft.setPower(power);
-        this.dtRight.setPower(power);
+        for (int i = 0; i < motors.length; i++) {
+            motors[i].setPower(power);
+        }
+    }
+    void setTurn (double power) {
+        for (int i = 0; i < motors.length; i++) {
+            motors[i].setPower(power * (i % 2 == 0 ? -1 : 1));
+        }
     }
     boolean isBusy () {
-        return this.dtLeft.isBusy() || this.dtRight.isBusy();
+        boolean isBusy = false;
+        for (int i = 0; i < motors.length; i++) {
+            isBusy = isBusy || motors[i].isBusy();
+        }
+        return isBusy;
     }
 }
