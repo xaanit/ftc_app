@@ -17,29 +17,18 @@ public class Main extends LinearOpMode {
         telemetry.addData("Status", "Initializing...");
         telemetry.update();
 
-        DcMotor dtLeft;
-        DcMotor dtRight;
-        Servo itemdrop;
-        Servo clawLeft;
-        Servo clawRight;
+        DcMotor dtLeft = hardwareMap.get(DcMotor.class, "dt left");
+        DcMotor dtRight = hardwareMap.get(DcMotor.class, "dt right");
+        DriveTrain dt = new DriveTrain(dtLeft, dtRight, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Servo clawLeft = hardwareMap.get(Servo.class, "claw left");
+        Servo clawRight = hardwareMap.get(Servo.class, "claw right");
 
-        dtLeft = hardwareMap.get(DcMotor.class, "dt left");
-        dtRight = hardwareMap.get(DcMotor.class, "dt right");
-        itemdrop = hardwareMap.get(Servo.class, "itemdrop");
-        clawLeft = hardwareMap.get(Servo.class, "claw left");
-        clawRight = hardwareMap.get(Servo.class, "claw right");
-
-        dtLeft.setDirection(DcMotor.Direction.FORWARD);
-        dtRight.setDirection(DcMotor.Direction.REVERSE);
-        itemdrop.setDirection(Servo.Direction.FORWARD);
         clawLeft.setDirection(Servo.Direction.FORWARD);
         clawRight.setDirection(Servo.Direction.REVERSE);
 
-        itemdrop.scaleRange(.2d, .55d);
         clawLeft.scaleRange(.65d, .8d);
         clawRight.scaleRange(0, .15d);
 
-        itemdrop.setPosition(0);
         clawLeft.setPosition(0);
         clawRight.setPosition(1);
 
@@ -59,8 +48,6 @@ public class Main extends LinearOpMode {
             double dtLeftPower = Range.clip(drive + turn, -1.0, 1.0);
             double dtRightPower = Range.clip(drive - turn, -1.0, 1.0);
 
-            double itemdropPos = (double) gamepad1.right_trigger;
-
             if (xLastPressed && !gamepad1.x) {
                 clawGrab = !clawGrab;
             }
@@ -69,9 +56,9 @@ public class Main extends LinearOpMode {
             double clawLeftPos = clawGrab ? 1 : 0;
             double clawRightPos = clawGrab ? 0 : 1;
 
+            dt.setPower(dtPower);
             dtLeft.setPower(dtLeftPower);
             dtRight.setPower(dtRightPower);
-            itemdrop.setPosition(itemdropPos);
             clawLeft.setPosition(clawLeftPos);
             clawRight.setPosition(clawRightPos);
 
