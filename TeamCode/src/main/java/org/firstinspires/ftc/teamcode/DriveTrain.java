@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
 
 class DriveTrain {
     private final DcMotor[] motors;
@@ -24,7 +25,12 @@ class DriveTrain {
     }
     void setTurn (double power) {
         for (int i = 0; i < motors.length; i++) {
-            motors[i].setPower(power * (i % 2 == 0 ? -1 : 1));
+            motors[i].setPower(Range.clip(power * (i % 2 == 0 ? -1 : 1), -1.0, 1.0));
+        }
+    }
+    void setTurn (double power, double offset) {
+        for (int i = 0; i < motors.length; i++) {
+            motors[i].setPower(Range.clip(power * (i % 2 == 0 ? -1 : 1) + offset, -1.0, 1.0));
         }
     }
     boolean isBusy () {
