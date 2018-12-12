@@ -12,7 +12,9 @@ public class Testing extends LinearOpMode {
         ColorSensor color = hardwareMap.get(ColorSensor.class, "color");
         waitForStart();
         while (true) {
-            telemetry.addData("Color", color.argb());
+            telemetry.addData("RGB", "%s, %s, %s", color.red(), color.green(), color.blue());
+            telemetry.addData("Alpha", color.alpha());
+            telemetry.addData("Hue", color.argb());
             telemetry.update();
         }
     }

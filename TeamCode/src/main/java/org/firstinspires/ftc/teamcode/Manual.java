@@ -18,6 +18,7 @@ public class Manual extends LinearOpMode {
         DcMotor dtLeft = hardwareMap.get(DcMotor.class, "dt left");
         DcMotor dtRight = hardwareMap.get(DcMotor.class, "dt right");
         DriveTrain dt = new DriveTrain(dtLeft, dtRight, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DcMotor lift = hardwareMap.get(DcMotor.class, "lift");
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -32,6 +33,8 @@ public class Manual extends LinearOpMode {
             } else {
                 dt.setPower(gamepad1.left_stick_y);
             }
+
+            lift.setPower(gamepad2.left_stick_y);
 
             int seconds = (int) runtime.seconds();
             telemetry.addData("Status", "Run Time: %dm%ds", seconds / 60, seconds % 60);
