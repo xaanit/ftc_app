@@ -13,11 +13,6 @@ class DriveTrain {
             motors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
     }
-    void setTargetPosition (int position) {
-        for (DcMotor motor : motors) {
-            motor.setTargetPosition(position);
-        }
-    }
     void setPower (double power) {
         for (DcMotor motor : motors) {
             motor.setPower(power);
@@ -32,12 +27,5 @@ class DriveTrain {
         for (int i = 0; i < motors.length; i++) {
             motors[i].setPower(Range.clip(power * (i % 2 == 0 ? -1 : 1) + offset, -1.0, 1.0));
         }
-    }
-    boolean isBusy () {
-        boolean isBusy = false;
-        for (DcMotor motor : motors) {
-            isBusy = isBusy || motor.isBusy();
-        }
-        return isBusy;
     }
 }
