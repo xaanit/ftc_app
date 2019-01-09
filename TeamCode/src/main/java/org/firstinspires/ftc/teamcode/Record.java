@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class Record extends LinearOpMode {
     ArrayList<String> steps = new ArrayList<String>();
     String currentType;
-    long currentStart;
+    long currentStart = 0;
 
     public void runOpMode () {
         DcMotor dtLeft = hardwareMap.get(DcMotor.class, "dt left");
@@ -32,7 +32,7 @@ public class Record extends LinearOpMode {
             } else if (gamepad1.dpad_left) {
                 recordStep("T", -1);
                 dt.setTurn(-1);
-            } else {
+            } else if (currentStart != 0) {
                 recordStep("S", 0);
                 dt.setPower(0);
             }
@@ -45,7 +45,8 @@ public class Record extends LinearOpMode {
         if (currentType != type) {
             String diff = Long.toString(System.currentTimeMillis() - currentStart);
             currentStart = System.currentTimeMillis();
-            steps.add(type + Integer.toString(magnitude) + "," + diff);
+            steps.add(currentType + "," + diff);
+            currentType = type + Integer.toString(magnitude);
         }
     }
 }
