@@ -21,19 +21,22 @@ public class Auto extends LinearOpMode {
             String[] parts = step.split(",");
             String type = parts[0];
             Long length = Long.parseLong(parts[1]);
-            telemetry.addData(type, length);
-            if (type == "P1") {
-                dt.setPower(1);
-            } else if (type == "T1") {
-                dt.setTurn(1);
-            } else if (type == "P-1") {
-                dt.setPower(-1);
-            } else if (type == "T-1") {
-                dt.setTurn(-1);
-            } else {
-                dt.setPower(0);
+            switch (type) {
+                case "P1":
+                    dt.setPower(1);
+                    break;
+                case "T1":
+                    dt.setTurn(1);
+                    break;
+                case "P-1":
+                    dt.setPower(-1);
+                    break;
+                case "T-1":
+                    dt.setTurn(-1);
+                    break;
+                default:
+                    dt.setPower(0);
             }
-            telemetry.addData("Power", Double.toString(dtLeft.getPower()) + ", " + Double.toString(dtRight.getPower()));
             telemetry.update();
             Thread.sleep(length);
         }
