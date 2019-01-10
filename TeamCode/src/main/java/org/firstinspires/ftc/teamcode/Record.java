@@ -4,20 +4,16 @@ import java.util.ArrayList;
 import android.text.TextUtils;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="Record", group="Test")
 
 public class Record extends LinearOpMode {
     ArrayList<String> steps = new ArrayList<String>();
-    String currentType;
+    String currentType = "";
     long currentStart = 0;
 
     public void runOpMode () {
-        DcMotor dtLeft = hardwareMap.get(DcMotor.class, "dt left");
-        DcMotor dtRight = hardwareMap.get(DcMotor.class, "dt right");
-
-        DriveTrain dt = new DriveTrain(dtLeft, dtRight, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DriveTrain dt = new DriveTrain(hardwareMap);
         waitForStart();
         while (opModeIsActive()) {
             if (gamepad1.dpad_up) {
@@ -42,11 +38,19 @@ public class Record extends LinearOpMode {
     }
 
     public void recordStep (String type, int magnitude) {
-        if (currentType != type) {
-            String diff = Long.toString(System.currentTimeMillis() - currentStart);
+        String typeStr;
+        if (magnitude == 0) {
+            typeStr = type;
+        } else {
+            typeStr = type + Integer.toString(magnitude);
+        }
+        if (!currentType.equals(typeStr)) {
+            if (!currentType.equals("")) {
+                String diff = Long.toString(System.currentTimeMillis() - currentStart);
+                steps.add(currentType + "," + diff);
+            }
             currentStart = System.currentTimeMillis();
-            steps.add(currentType + "," + diff);
-            currentType = type + Integer.toString(magnitude);
+            currentType = typeStr;
         }
     }
 }
