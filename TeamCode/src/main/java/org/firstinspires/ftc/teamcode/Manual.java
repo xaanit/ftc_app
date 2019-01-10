@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="Java Drivetrain 2", group="JJ")
+@TeleOp(name="Manual Driving", group="Driving")
 
 public class Manual extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
