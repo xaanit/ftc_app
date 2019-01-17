@@ -25,10 +25,18 @@ public class Manual extends LinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()) {
+            double speed = gamepad1.b ? .4 : 1;
             if (gamepad1.right_stick_x != 0) {
-                dt.setTurn(gamepad1.right_stick_x);
+                dt.setTurn(gamepad1.right_stick_x * speed);
             } else {
-                dt.setPower(gamepad1.left_stick_y);
+                dt.setPower(gamepad1.left_stick_y * speed);
+            }
+            if (gamepad1.dpad_up) {
+                dt.setLift(-1 * speed);
+            } else if (gamepad1.dpad_down) {
+                dt.setLift(1 * speed);
+            } else {
+                dt.setLift(0);
             }
 
             int seconds = (int) runtime.seconds();
